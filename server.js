@@ -1,6 +1,22 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+// configure database
+const dbConfig = require('./config/database.config.js');
+const mongoose = require('mongoose');
+
+mongoose.Promise = global.Promise;
+
+// connect to the database
+mongoose.connect(dbConfig.url, {
+    useNewUrlParser: true
+}).then(() => {
+    console.log("Successfully connected to the database");
+}).catch(err => {
+    console.log("Could not connect to the dabase. Exiting now...", err);
+    process.exit();
+})
+
 // create express app
 const app = express();
 
@@ -16,6 +32,6 @@ app.get('/', (req, res) => {
 });
 
 // listen for requests
-app.listen(3000, () => {
+app.listen(3001, () => {
     console.log("Server is listening on port 3000");
 });
